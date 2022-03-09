@@ -21,4 +21,10 @@ router.get('/:id', productsController.getId)
 //GET em /products ==> BUSCA todos os produtos listados no banco de dados
 router.get('/', productsController.get)
 
+//POSTimage em /images vai ADICIONAR imagens em um produto
+router.post('/:id/images', productsController.createImage)
+
+//DELETE em /images/:id vai EXCLUIR imagens de um produto
+router.delete('/:productId/images/:id', productsController.removeImage)
+
 module.exports = router

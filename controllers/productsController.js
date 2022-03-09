@@ -8,6 +8,13 @@ const remove = async (req, res) => {
   })
 }
 
+const removeImage = async (req, res) => {
+  await Product.removeImage (req.params.productId, req.params.id)
+  res.send({
+    success: true
+  })
+}
+
 const patch = async (req, res) => {
   const oldProduct = await Product.findById(req.params.id)
   if(!oldProduct){
@@ -55,6 +62,15 @@ const { product, price } = req.body
   })
 }
 
+const createImage = async (req, res) => {
+  const { description, url } = req.body
+    await Product.addImage (req.params.id, [description, url])
+    res.send({
+      success: true,
+      data: req.body
+    })
+  }
+
 const getId = async (req, res) => {
   const product = await Product.findById(req.params.id)
   res.send(product)
@@ -74,9 +90,11 @@ const get = async (req, res) => {
 
 module.exports = {
   remove,
+  removeImage,
   patch,
   put,
   create,
+  createImage,
   getId,
   get
 }
