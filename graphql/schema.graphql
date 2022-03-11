@@ -21,9 +21,9 @@
     createProduct (input: ProductInput): Product
     createCategory (input: CategoryInput): Category
     updateProduct (id: String!, input: ProductUpdateInput): Product
-    updateCategory (id: String!, input: CategoryUpdateInput): Category
+    updateCategory (category: String!, input: CategoryUpdateInput): Category
     deleteProduct (id: String!): Boolean
-    deleteCategory (id: String!): Boolean
+    deleteCategory (category: String!): Boolean
     createImageOnProduct (productId: String!, input: ImageInput): Image
     deleteImageOnProduct (productId: String!, id: String!): Boolean
   }
