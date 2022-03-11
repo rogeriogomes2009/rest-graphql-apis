@@ -1,73 +1,51 @@
 const db = require('../../db')
-const Product = require('../../models/product')(db)
+const Category = require('../../models/category')(db)
 const { ApolloError } = require('apollo-server-express')
 
-const getAllProducts = async (context, {filter} ) => {
-  let products = null
-  if(filter && filter.categoryId){
-    products = await Product.findAllByCategory(filter.categoryId)
-  }else{
-    products = await Product.findAll()
-  }
-  return products
-}
-
-const createProduct = async (context,{input}) => {
-  const { product, price } = input
-  await Product.create ([product, price])
+const createCategory = async (context,{input}) => {
+  const { category } = input
+  await Category.create ([category])
   return{
-    product, price
+    category
   }
 }
 
-const createImageOnProduct = async (context,{productId, input}) => {
-  const { description, url } = input
-    await Product.addImage (productId, [description, url])
-      return {
-        description,
-        url
-      }
-  }
-
-
-const deleteProduct = async (context,{id}) => {
-  await Product.remove(id)
+const deleteCategory = async (context,{id}) => {
+  await Category.remove(id)
   return true
 }
 
-const updateProduct = async (context,{id, input}) => {
-  const oldProduct = await Product.findById(id)
-  if(!oldProduct){
-   throw new ApolloError ('Product not found!')
+const updateCategory = async (context,{id, input}) => {
+  const oldCategory = await Category.findById(id)
+  if(!oldCategory){
+   throw new ApolloError ('Category not found!')
   }
-  if(input.product){
-    oldProduct.product = input.product
+  if(input.category){
+    oldCategory.category = input.category
   }
-  if(input.price){
-    oldProduct.price = input.price
-  }
-  await Product.update(id, [oldProduct.product, oldProduct.price])
+  await Category.update(id, [oldCategory.category])
   if(input.categories){ //atualizar categories
     try{
-    await Product.updateCategories(id, input.categories)
+    await Category.updateCategories(id, input.categories)
   }catch(err){
     throw new ApolloError ('Category not found!')
   }
 } 
-return oldProduct
+return oldCategory
 }
-const deleteImageOnProduct = async (context,{id, productId}) => {
-  await Product.removeImage (productId, id)
-  return true
-  
+const getAllCategories = async (context, {filter} ) => {
+  let categories = null
+  if(filter && filter.categoryId){
+    categories = await Category.findAllByCategory(filter.categoryId)
+  }else{
+    categories = await Category.findAll()
+  }
+  return categories
 }
-
 
 module.exports = {
-  getAllProducts,
-  createProduct,
-  deleteProduct,
-  updateProduct,
-  createImageOnProduct,
-  deleteImageOnProduct
+  createCategory,
+  deleteCategory,
+  updateCategory,
+  getAllCategories
 }

@@ -1,9 +1,11 @@
 const { getAllProducts, createProduct, deleteProduct, updateProduct, createImageOnProduct, deleteImageOnProduct} = require ('./products')
+const { getAllCategories, createCategory, deleteCategory, updateCategory,} = require ('./categories')
 
 const resolvers = {
   //QUERY ==> Busca dados
   Query: {
-    getAllProducts
+    getAllProducts,
+    getAllCategories
   },
   //MUTATION ==> Altera, inclui, exclui dados
   Mutation: {
@@ -11,7 +13,11 @@ const resolvers = {
     deleteProduct,
     updateProduct,
     createImageOnProduct,
-    deleteImageOnProduct
+    deleteImageOnProduct,
+    getAllCategories,
+    createCategory,
+    deleteCategory,
+    updateCategory
 }
 }
 module.exports = resolvers

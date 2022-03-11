@@ -1,42 +1,33 @@
 const db = require('../db')
-const Product = require('../models/product')(db)
+const Category = require('../models/category')(db)
 
 const remove = async (req, res) => {
-  await Product.remove(req.params.id)
-  res.send({
-    success: true
-  })
-}
-
-const removeImage = async (req, res) => {
-  await Product.removeImage (req.params.productId, req.params.id)
+  await Category.remove(req.params.id)
   res.send({
     success: true
   })
 }
 
 const patch = async (req, res) => {
-  const oldProduct = await Product.findById(req.params.id)
-  if(!oldProduct){
+  const oldCategory = await Category.findById(req.params.id)
+  if(!oldCategory){
    return res.send({
       success: false,
-      message:'Product not found'
+      message:'Category not found'
     })
   }
-  if(req.body.product){
-    oldProduct.product = req.body.product
+  if(req.body.category){
+    oldCategory.product = req.body.category
   }
-  if(req.body.price){
-    oldProduct.price = req.body.price
-  }
-  await Product.update(req.params.id, [oldProduct.product, oldProduct.price])
+  
+  await Category.update(req.params.id, [oldCategory.category])
   if(req.body.categories){ //atualizar categories
     try{
-    await Product.updateCategories(req.params.id, req.body.categories)
+    await Category.updateCategory(req.params.id, req.body.category)
   }catch(err){
     return res.send({
       success: false,
-      message:'Categories not found'
+      message:'Category not found'
     })
   }
 }
@@ -46,55 +37,44 @@ const patch = async (req, res) => {
 }
 
 const put = async (req, res) => {
-  const { product, price } = req.body
-  await Product.update(req.params.id, [product, price])
+  const { category } = req.body
+  await Category.update(req.params.id, [category])
   res.send({
     success: true
   })
 }
 
 const create = async (req, res) => {
-const { product, price } = req.body
-  await Product.create ([product, price])
+const { category } = req.body
+  await Category.create ([category])
   res.send({
     success: true,
     data: req.body
   })
 }
 
-const createImage = async (req, res) => {
-  const { description, url } = req.body
-    await Product.addImage (req.params.id, [description, url])
-    res.send({
-      success: true,
-      data: req.body
-    })
-  }
-
 const getId = async (req, res) => {
-  const product = await Product.findById(req.params.id)
-  res.send(product)
+  const category = await Category.findById(req.params.id)
+  res.send(category)
 }
 
 const get = async (req, res) => {
-  let products = null
+  let categories = null
   if(req.query.categoryId){
-    products = await Product.findAllByCategory(req.query.categoryId)
+    categories = await Category.findAllByCategory(req.query.categoryId)
   }else{
-    products = await Product.findAll()
+    categories = await Category.findAll()
   }
   res.send({
-    products
+    categories
   })
 }
 
 module.exports = {
   remove,
-  removeImage,
   patch,
   put,
   create,
-  createImage,
   getId,
   get
 }
