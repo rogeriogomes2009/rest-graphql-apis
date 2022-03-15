@@ -14,7 +14,6 @@ const resolvers = {
     updateProduct,
     createImageOnProduct,
     deleteImageOnProduct,
-    getAllCategories,
     createCategory,
     deleteCategory,
     updateCategory

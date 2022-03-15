@@ -37,6 +37,12 @@ const init = connection => {
             return products
         }
 
+        const findAll = async() => {
+            const conn = await connection
+            const [results] = await conn.query('select * from categories')
+            return findImages(results)
+        }
+
 const findAllByCategory = async(categoryId) => {
         const conn = await connection
         const [results] = await conn.query('select * from products where id in (select product_id from categories_products where category_id = ?)', [categoryId])
@@ -47,6 +53,7 @@ const findAllByCategory = async(categoryId) => {
         create,
         remove,
         update,
+        findAll,
         findAllByCategory
     }
 }
