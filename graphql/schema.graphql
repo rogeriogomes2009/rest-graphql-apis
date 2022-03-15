@@ -1,7 +1,7 @@
  type Query {
     getAllProducts(filter: ProductFilter): [Product]
     getAllCategories(filter: CategoryFilter): [Category]
-  }
+   }
   type Product {
     id: String
     product: String
