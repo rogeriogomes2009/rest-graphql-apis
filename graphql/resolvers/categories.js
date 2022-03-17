@@ -1,6 +1,6 @@
 const db = require('../../db')
 const Category = require('../../models/category')(db)
-const { ApolloError } = require('apollo-server-express')
+const { ApolloError, AuthenticationError } = require('apollo-server-express')
 
 const createCategory = async (context,{input}) => {
   const { category } = input
@@ -33,7 +33,7 @@ const updateCategory = async (context,{id, input}) => {
 } 
 return oldCategory
 }
-const getAllCategories = async (context, {filter} ) => {
+const getAllCategories = async (parent, {filter}, context ) => {
   let categories = null
   if(filter && filter.categoryId){
     categories = await Category.findAllByCategory(filter.categoryId)
