@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const productsController = require('../controllers/productsController')
+const jwt = require('jsonwebtoken')
+const needsAuth = require('../utils/auth')
 
-
+router.use(needsAuth)
 //DELETE em /products/:id EXCLUI os dados do produto do ID
 router.delete('/:id', productsController.remove)
 

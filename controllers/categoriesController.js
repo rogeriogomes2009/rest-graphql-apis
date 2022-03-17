@@ -54,11 +54,13 @@ const { category } = req.body
 }
 
 const getId = async (req, res) => {
+  console.log(res.locals.user)
   const category = await Category.findById(req.params.id)
   res.send(category)
 }
 
 const get = async (req, res) => {
+  console.log(res.locals.user)
   let categories = null
   if(req.query.categoryId){
     categories = await Category.findAllByCategory(req.query.categoryId)

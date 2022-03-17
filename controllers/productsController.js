@@ -73,33 +73,25 @@ const createImage = async (req, res) => {
   }
 
 const getId = async (req, res) => {
+  console.log(res.locals.user)
   const product = await Product.findById(req.params.id)
   res.send(product)
 }
 
 const get = async (req, res) => {
-  if(req.headers && req.headers.authorization){
-    const header = req.headers.authorization
-    const headerParts = header.split(' ')
-    const secret = 'Melancia@123'
-    try{
-    jwt.verify(headerParts[1], secret)
-    let products = null
+  //quem fez essa requisição???
+  console.log(res.locals.user)
+   let products = null
   if(req.query.categoryId){
     products = await Product.findAllByCategory(req.query.categoryId)
   }else{
     products = await Product.findAll()
   }
-  return res.send({
+  res.send({
     products
   }) 
-  }catch(err){
 }
-}
-res.send({
-  error: 'WRONG AUTH TOKEN'
-})
-}
+
 
 module.exports = {
   remove,
